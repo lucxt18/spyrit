@@ -505,6 +505,7 @@ class noiCompNet(compNet):
      
     def forward_N0_maptoimage(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         
         #-- Pre-processing(Estimating No and normalizing by No) 
@@ -528,6 +529,7 @@ class noiCompNet(compNet):
  
     def forward_stat_comp(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         x = x/self.N0;
         x = 2*x-torch.reshape(self.Patt(torch.ones(b*c,1, h,w).to(x.device)),(b*c,1,self.M)); 
@@ -549,6 +551,7 @@ class DenoiCompNet(noiCompNet):
    
     def forward_maptoimage(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         var = x[:,:,self.even_index] + x[:,:,self.uneven_index];
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         x = x/self.N0;
@@ -565,6 +568,7 @@ class DenoiCompNet(noiCompNet):
     
     def forward_maptoimage_2(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         var = x[:,:,self.even_index] + x[:,:,self.uneven_index];
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         x = x/self.N0;
@@ -582,6 +586,7 @@ class DenoiCompNet(noiCompNet):
      
     def forward_denoised_Pinv(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         var = x[:,:,self.even_index] + x[:,:,self.uneven_index];
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         x = x/self.N0;
@@ -603,6 +608,7 @@ class DenoiCompNet(noiCompNet):
 
     def forward_NO_maptoimage(self, x, b, c, h, w):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
         var = x[:,:,self.even_index] + x[:,:,self.uneven_index];
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         
@@ -628,6 +634,8 @@ class DenoiCompNet(noiCompNet):
         
         #-- Pre-processing(Recombining positive and negatve values+normalisation)
         
+        x = x.view(b*c, 1, 2*self.M)
+
         # If C, s, g are arrays, they must follow the same dimensions as the
         # data x 
         
@@ -670,6 +678,8 @@ class DenoiCompNet(noiCompNet):
  
     def forward_N0_maptoimage_expe_bis(self, x, b, c, h, w, C, s, g, N0):
         #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        x = x.view(b*c, 1, 2*self.M)
+
         var = g**2*(x[:,:,self.even_index] + x[:,:,self.uneven_index]) - 2*C*g +2*s**2;
         var = x[:,:,self.even_index] + x[:,:,self.uneven_index];
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
