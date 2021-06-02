@@ -625,7 +625,22 @@ class DenoiCompNet(noiCompNet):
         return x;
 
     def forward_N0_maptoimage_expe(self, x, b, c, h, w, C, s, g):
-        #-- Pre-processing(Recombining positive and negatve values+normalisation) 
+        
+        #-- Pre-processing(Recombining positive and negatve values+normalisation)
+        
+        # If C, s, g are arrays, they must follow the same dimensions as the
+        # data x 
+        
+        # Making sure C,s,g can be arrays or scalars
+        if not np.isscalar(C):
+            C = C.view(b*c, 1, 1)
+            
+        if not np.isscalar(s):
+            s = s.view(b*c, 1, 1)
+        
+        if not np.isscalar(g):
+            g = g.view(b*c, 1, 1)
+        
         var = g**2*(x[:,:,self.even_index] + x[:,:,self.uneven_index]) - 2*C*g +2*s**2;
         x = x[:,:,self.even_index] - x[:,:,self.uneven_index];
         
