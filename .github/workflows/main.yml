@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
     - name: Checkout github repo
@@ -38,6 +38,8 @@ jobs:
             export PYTHONFOLDER="cp37-cp37m"
           elif [ ${{ matrix.python-version }} == "3.8" ]; then
             export PYTHONFOLDER="cp38-cp38"
+          elif [ ${{ matrix.python-version }} == "3.9" ]; then
+            export PYTHONFOLDER="cp39-cp39"
           fi
           docker run --rm -e "PYTHONFOLDER=${PYTHONFOLDER}" -v $GITHUB_WORKSPACE:/home quay.io/pypa/manylinux2014_x86_64 /home/.github/workflows/actionsCreateWheelLinux.sh
           ls wheelhouse
@@ -80,7 +82,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
     - name: Checkout github repo
@@ -136,7 +138,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: [3.6, 3.7, 3.8]
+        python-version: [3.6, 3.7, 3.8, 3.9]
 
     steps:
     - name: Checkout github repo
@@ -170,6 +172,8 @@ jobs:
             export PYTHONFOLDER="cp37-cp37m"
           elif [ ${{ matrix.python-version }} == "3.8" ]; then
             export PYTHONFOLDER="cp38-cp38"
+          elif [ ${{ matrix.python-version }} == "3.9" ]; then
+            export PYTHONFOLDER="cp39-cp39"
           fi
           if  [ ${{ matrix.os }} == "ubuntu-latest" ]; then
             export OS="manylinux"
