@@ -48,7 +48,7 @@ jobs:
     - name: Create Wheel Windows
       if: matrix.os == 'windows-latest'
       run: |
-          pip install wheel delocate numpy==1.19.3
+          pip install wheel delocate numpy==1.20.3
           rm -r -fo fht
           cmd /c mklink /d fht spyrit\fht\fht
           python setup.py sdist bdist_wheel
@@ -63,7 +63,7 @@ jobs:
           brew update
           brew install ccache \
                        libomp
-          pip install wheel delocate numpy==1.19.3
+          pip install wheel delocate numpy==1.20.3
           python setup.py sdist bdist_wheel
           delocate-wheel -w wheelhouse -v dist/*.whl
           ls wheelhouse
@@ -120,7 +120,7 @@ jobs:
           if(-not (Test-Path -path "data_example")) { mkdir data_example }
           rm -r -fo fht
           cmd /c mklink /d fht spyrit\fht\fht
-          pip install numpy==1.19.3
+          pip install numpy==1.20.3
           pip install requests torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install -e .
           cd data_example
@@ -195,7 +195,7 @@ jobs:
       run: |
           if(-not (Test-Path -path "data_example")) { mkdir data_example }
           cd dist
-          pip install numpy==1.19.3
+          pip install numpy==1.20.3
           pip install requests torch==1.8.0+cpu torchvision==0.9.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
           pip install --find-links=. spyrit
           cd ..\data_example

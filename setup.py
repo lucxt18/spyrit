@@ -64,7 +64,7 @@ setup(name='spyrit',
                              extra_link_args=[compile_args],)
                    for t in types],
       install_requires=[
-          'numpy (==1.19.3)',
+          'numpy (==1.20.3)',
           'matplotlib',
           'scipy',
           'torch',
