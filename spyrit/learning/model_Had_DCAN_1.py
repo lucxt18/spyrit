@@ -680,6 +680,18 @@ class DenoiCompNet_NVMS(noiCompNet):
         x = self.forward_reconstruct(x, b, c, h, w)
         return x
 
+    def forward_reconstruct_mmse(self, x, b, c, h, w):
+        # -- Variance estimation for the measurements
+        x, var = self.forward_variance(x, b, c, h, w)
+        # -- Normalization and combination of pos/neg coefficients
+        x = self.forward_preprocess(x, b, c, h, w)
+        # -- Linear denoising (measurements domain)
+        x = self.forward_denoise(x, var, b, c, h, w)
+        # -- Linear completion (image domain)
+        x = self.forward_maptoimage(x, b, c, h, w)
+
+        return x
+
     def forward_reconstruct(self, x, b, c, h, w):
         #  -- f(0) : image initialization
         f = torch.zeros(b * c, 1, h, w).to(x.device)
@@ -739,7 +751,7 @@ class DenoiCompNet_NVMS(noiCompNet):
         var = torch.div(var, N0_est ** 2)
 
         if self.denoi == 0:
-            NVMS_est = NVMS / N0_est[0, 0, 0].numpy()
+            NVMS_est = NVMS  / N0_est[0, 0, 0].numpy()
             P0, P1, P2 = self.forward_denoise_operators(self.Cov, NVMS_est, self.n, self.M)
 
         # -- Iterative image correction
@@ -757,7 +769,7 @@ class DenoiCompNet_NVMS(noiCompNet):
         return  f
 
     def forward_reconstruct_expe(self, x, NVMS, b, c, h, w, C, s, K):
-        f = self.forward_maptoimage_expe(self, x, NVMS, b, c, h, w, C, s, K)
+        f = self.forward_maptoimage_expe(x, NVMS, b, c, h, w, C, s, K)
         # -- Non linear image correction
         f = self.forward_postprocess(f, b, c, h, w)
 
